@@ -1,5 +1,5 @@
 <template>
-  <footer class="flex justify-center space-x-8 mt-8">
+  <footer class="bg-sky-700 text-white py-4 px-8 flex justify-between items-center">
     <a href="https://github.com/Thierry2210" target="_blank" rel="noopener noreferrer"
       @click.prevent="socialAlert('GitHub')" class="flex flex-col items-center">
       <img src="@/assets/img/github.png" alt="GitHub" class="w-8 h-8" />
