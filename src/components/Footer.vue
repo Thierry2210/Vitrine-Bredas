@@ -1,32 +1,37 @@
 <template>
-  <footer class="bg-sky-700 text-white py-4 px-8 flex justify-between items-center">
-    <a href="https://github.com/Thierry2210" target="_blank" rel="noopener noreferrer"
-      @click.prevent="socialAlert('GitHub')" class="flex flex-col items-center">
-      <img src="@/assets/img/github.png" alt="GitHub" class="w-8 h-8" />
-      <p>Github</p>
-    </a>
-    <a href="https://www.linkedin.com/in/matheus-thierry-4512842b3/" target="_blank" rel="noopener noreferrer"
-      @click.prevent="socialAlert('LinkedIn')" class="flex flex-col items-center">
-      <img src="@/assets/img/linkedin.png" alt="LinkedIn" class="w-8 h-8" />
-      <p>Linkedin</p>
-    </a>
-    <a href="https://www.instagram.com/mthierry_/" target="_blank" rel="noopener noreferrer"
-      @click.prevent="socialAlert('Instagram')" class="flex flex-col items-center">
-      <img src="@/assets/img/instagram.png" alt="Instagram" class="w-8 h-8" />
-      <p>Instagram</p>
-    </a>
+  <footer class="bg-white text-black pt-8 pb-8 mt-auto shadow-mt border-t">
+    <div class="container mx-auto">
+      <div class="flex flex-col md:flex-row text-center md:text-left justify-between">
+        <div class="mb-6 md:mb-0 md:w-1/3 flex flex-col items-center md:items-start">
+          <img src="@/assets/img/logo-bredas.svg" alt="Logo Bredas" width="130" class="mb-2 transition-all duration-300 hover:scale-105" />
+          <p class="text-xs">&copy; 2025 Bredas. Todos os direitos reservados.</p>
+        </div>
+        <div class="mb-6 md:mb-0 md:w-1/3 flex flex-col items-center md:items-start">
+          <h6 class="font-bold mb-2">Fale conosco</h6>
+          <p class="text-xs mb-1 flex items-center">
+            <i class="bi bi-whatsapp text-green-500 mr-1"></i> Whatsapp:
+          </p>
+          <a href="https://wa.me/5514996418461" class="text-black no-underline hover:underline" target="_blank" rel="noopener">
+            (14) 99641-8461
+          </a>
+        </div>
+        <div class="md:w-1/3 flex flex-col items-center md:items-start">
+          <h6 class="font-bold mb-2">Links úteis</h6>
+          <ul class="list-none space-y-1">
+            <li>
+              <router-link to="/sobre" class="text-black no-underline hover:underline">Sobre nós</router-link>
+            </li>
+            <li>
+              <router-link to="/contato" class="text-black no-underline hover:underline">Contato</router-link>
+            </li>
+            <li>
+              <router-link to="/politica-de-privacidade" class="text-black no-underline hover:underline">
+                Política de Privacidade
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </footer>
 </template>
-
-<script setup>
-function socialAlert(platform) {
-  alert(`Você está sendo redirecionado para o ${platform}.`);
-  if (platform === 'GitHub') {
-    window.open('https://github.com/Thierry2210', '_blank');
-  } else if (platform === 'LinkedIn') {
-    window.open('https://www.linkedin.com/in/matheus-thierry-4512842b3/', '_blank');
-  } else if (platform === 'Instagram') {
-    window.open('https://www.instagram.com/mthierry_/', '_blank');
-  }
-}
-</script>
