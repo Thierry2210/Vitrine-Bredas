@@ -17,18 +17,12 @@
       <h2 class="text-2xl font-bold text-gray-900">
         Compre nas <span class="text-blue-500">Melhores Categorias</span>
       </h2>
-      <button class="text-blue-500 hover:text-blue-600 flex items-center">
-        Ver todas
-        <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
     </div>
-    <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-6">
+    <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 cursor-pointer">
       <div v-for="category in categories" :key="category.name" class="text-center">
         <div
           class="w-20 h-20 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer">
-          <img :src="category.icon" :alt="category.name" class="w-12 h-12 object-contain" />
+          <img :src="category.icon" :alt="category.name" class="w-20 h-20 object-contain" />
         </div>
         <p class="text-sm font-medium text-gray-900">{{ category.name }}</p>
       </div>
@@ -36,7 +30,7 @@
   </section>
 
   <!-- Destaques -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-gray-900">
         Destaques <span class="text-blue-500">Smartphone</span>
@@ -52,7 +46,7 @@
     <!-- Cards adaptados -->
     <div class="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6">
       <div v-for="product in filteredProducts" :key="product.idProduto"
-        class="bg-white rounded shadow p-4 hover:shadow-md transition-all flex flex-col">
+        class="bg-white rounded shadow p-4 hover:shadow-md transition-all flex flex-col cursor-pointer motion-safe:hover:scale-110">
 
         <!-- Imagem + Badge -->
         <div class="relative mb-3">
@@ -94,23 +88,21 @@
   <div class="whatsapp">
     <a id="whatsapp" href="https://wa.me/5514996418461?text=Olá, poderia me ajudar?" target="_blank"
       class="fixed w-[60px] h-[60px] bottom-10 right-10 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-lg z-50">
-      <i class="bi bi-whatsapp"> <img src="/src/assets/img/whatsapp.png" alt="" class="justify-center h-10 w-10"></i>
+      <i class="bi bi-whatsapp">
+        <img src="/src/assets/img/whatsapp.png" alt="" class="justify-center h-10 w-10" />
+      </i>
     </a>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-
+import { cart, cartCount, adicionarCarrinho } from '@/assets/js/cartStore.js'
 const search = ref('')
 const products = ref([])
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-}
-
-function adicionarCarrinho(produto) {
-  console.log('Adicionado ao carrinho:', produto)
 }
 
 const filteredProducts = computed(() => {
@@ -169,13 +161,25 @@ onMounted(async () => {
 })
 
 const categories = [
-  { name: 'Smartphones', icon: '/src/assets/img/categorias/smartphone.png' },
-  { name: 'Notebooks', icon: '/src/assets/img/categorias/notebook.png' },
-  { name: 'Games', icon: '/src/assets/img/categorias/games.png' },
-  { name: 'TVs', icon: '/src/assets/img/categorias/tv.png' },
-  { name: 'Áudio', icon: '/src/assets/img/categorias/audio.png' },
-  { name: 'Eletrodomésticos', icon: '/src/assets/img/categorias/eletro.png' },
-  { name: 'Acessórios', icon: '/src/assets/img/categorias/acessorios.png' },
+  {
+    name: 'Smartphones',
+    icon: '/src/assets/img/categorias/smartphones.png'
+  },
+  {
+    name: 'Notebooks',
+    icon: '/src/assets/img/categorias/notebooks.png'
+  },
+  {
+    name: 'Consoles',
+    icon: '/src/assets/img/categorias/consoles.png'
+  },
+  {
+    name: 'Periféricos',
+    icon: '/src/assets/img/categorias/pelifericos.png'
+  },
+  {
+    name: 'TVs',
+    icon: '/src/assets/img/categorias/tvs.png'
+  }
 ]
-
 </script>
