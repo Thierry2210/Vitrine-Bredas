@@ -31,6 +31,12 @@
             <img src="/src/assets/img/perfil.png" alt="Entrar/Cadastrar" class="w-5 h-5 mr-1" />
             <span class="text-sm">Entrar/Cadastrar</span>
           </router-link>
+          <router-link to="/likeds"
+            class="flex items-center text-gray-700 hover:text-gray-900 motion-safe:hover:scale-110">
+            <i class="bi bi-heart h-5 w-5 mr-1 text-2xl"></i>
+            <img src="/src/assets/img/like.png" alt="Favoritos" class="w-5 h-5 mr-1" />
+            <span class="text-sm">Favoritos</span>
+          </router-link>
           <router-link to="/cart"
             class="flex items-center text-gray-700 hover:text-gray-900 relative motion-safe:hover:scale-110">
             <img src="/src/assets/img/carrinho-de-compras.png" alt="Carrinho" class="w-5 h-5 mr-1" />
@@ -86,7 +92,11 @@
 <script setup>
 import { ref } from 'vue'
 import logo from '@/assets/img/logo-bredas.svg'
-import { cartCount } from '@/assets/js/cartStore.js'
+import { cart } from '@/assets/js/cartStore.js'
+import { computed } from 'vue'
+const cartCount = computed(() =>
+  cart.value.reduce((sum, item) => sum + (item.quantity || 1), 0)
+)
 
 const showCategories = ref(false)
 </script>

@@ -22,12 +22,11 @@
           </div>
           <button
             @click="removeItem(index)"
-            class="text-red-500 hover:underline text-xs"
-          >
+            class="text-red-500 hover:underline text-xs">
             Remover
           </button>
         </div>
-        <div v-else class="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-center min-h-[120px]">
+        <div v-else class="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-center min-h-[240px]">
           <img src="https://img.icons8.com/ios-filled/60/cccccc/shopping-cart.png" alt="Carrinho vazio" class="mb-2 opacity-60" />
           <p class="text-gray-400 text-base mb-1">Seu carrinho está vazio</p>
           <p class="text-gray-400 text-xs">Adicione produtos para vê-los aqui.</p>
@@ -72,11 +71,11 @@
 </template>
 
 <script setup>
-import { cart } from '@/assets/js/cartStore.js'
+import { cart, removerCarrinho } from '@/assets/js/cartStore.js'
 import { ref, computed } from 'vue'
 
 function removeItem(index) {
-  cart.value.splice(index, 1)
+  removerCarrinho(index)
 }
 
 const totalPrice = computed(() =>

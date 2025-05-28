@@ -12,19 +12,19 @@
   </header>
 
   <!-- Categorias -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-gray-900">
         Compre nas <span class="text-blue-500">Melhores Categorias</span>
       </h2>
     </div>
-    <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 cursor-pointer">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 cursor-pointer">
       <div v-for="category in categories" :key="category.name" class="text-center">
         <div
-          class="w-20 h-20 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer">
+          class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer shadow-lg">
           <img :src="category.icon" :alt="category.name" class="w-20 h-20 object-contain" />
         </div>
-        <p class="text-sm font-medium text-gray-900">{{ category.name }}</p>
+        <p class="text-base font-semibold text-gray-900">{{ category.name }}</p>
       </div>
     </div>
   </section>
@@ -48,7 +48,7 @@
       <div v-for="product in filteredProducts" :key="product.idProduto"
         class="bg-white rounded shadow p-4 hover:shadow-md transition-all flex flex-col cursor-pointer motion-safe:hover:scale-110">
 
-        <!-- Imagem + Badge -->
+        <!-- Imagem + Badge + Favorito -->
         <div class="relative mb-3">
           <img :src="product.imagens[0]?.urlImagem || 'https://via.placeholder.com/200x200?text=Sem+Imagem'"
             :alt="product.descricao" class="w-full h-32 object-cover rounded" />
@@ -56,6 +56,20 @@
             class="absolute top-2 left-2 bg-yellow-400 text-white text-xs px-2 py-1 rounded">
             {{ product.percentualDesconto }}% OFF
           </div>
+          <!-- Botão de Favoritar -->
+          <button @click.stop="toggleFavorito(product)" class="absolute top-2 right-2 z-10"
+            :aria-label="isFavorito(product) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+            <svg v-if="isFavorito(product)" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" viewBox="0 0 24 24"
+              class="w-6 h-6">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f59e42" stroke-width="2"
+              viewBox="0 0 24 24" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+          </button>
         </div>
 
         <!-- Info -->
@@ -96,10 +110,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { cart, cartCount, adicionarCarrinho } from '@/assets/js/cartStore.js'
+import { ref, onMounted } from 'vue'
+import { adicionarCarrinho } from '@/assets/js/cartStore.js'
+import { computed } from 'vue'
+
 const search = ref('')
 const products = ref([])
+const favoritos = ref(JSON.parse(localStorage.getItem('favoritos') || '[]'))
+
+function toggleFavorito(produto) {
+  const idx = favoritos.value.findIndex(p => p.idProduto === produto.idProduto)
+  if (idx >= 0) {
+    favoritos.value.splice(idx, 1)
+  } else {
+    favoritos.value.push(produto)
+  }
+  localStorage.setItem('favoritos', JSON.stringify(favoritos.value))
+}
+
+function isFavorito(produto) {
+  return favoritos.value.some(p => p.idProduto === produto.idProduto)
+}
+
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
@@ -174,7 +206,7 @@ const categories = [
     icon: '/src/assets/img/categorias/consoles.png'
   },
   {
-    name: 'Periféricos',
+    name: 'Peliféricos',
     icon: '/src/assets/img/categorias/pelifericos.png'
   },
   {
