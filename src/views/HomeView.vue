@@ -12,30 +12,35 @@
   </header>
 
   <!-- Categorias -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">
+  <section class="px-2 sm:px-4 md:px-10 py-10 sm:py-8 text-center">
+    <div class="flex flex-col sm:flex-col items-center justify-center mb-4 sm:mb-6 gap-2">
+      <h2 class="text-xl sm:text-4xl font-bold text-gray-900">
         Compre nas <span class="text-blue-500">Melhores Categorias</span>
       </h2>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 cursor-pointer">
-      <div v-for="category in categories" :key="category.name" class="text-center">
+    <div
+      class="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 sm:gap-6 md:gap-1 justify-items-center">
+      <div v-for="category in categories" :key="category.name"
+        class="text-center flex flex-col items-center justify-center">
         <div
-          class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer shadow-lg">
-          <img :src="category.icon" :alt="category.name" class="w-20 h-20 object-contain" />
+          class="w-20 h-20 sm:w-24 sm:h-24 mb-2 sm:mb-4 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer shadow-lg">
+          <img :src="category.icon" :alt="category.name" class="w-12 h-12 sm:w-20 sm:h-20 object-contain" />
         </div>
-        <p class="text-base font-semibold text-gray-900">{{ category.name }}</p>
+        <p class="text-sm sm:text-base font-semibold text-gray-900">
+          {{ category.name }}
+        </p>
       </div>
     </div>
   </section>
 
+
   <!-- Destaques -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-900">
+  <section class="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-6 sm:py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-2">
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900">
         Destaques <span class="text-blue-500">Smartphone</span>
       </h2>
-      <button class="text-blue-500 hover:text-blue-600 flex items-center">
+      <button class="text-blue-500 hover:text-blue-600 flex items-center mt-2 sm:mt-0">
         Ver todas
         <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -44,14 +49,14 @@
     </div>
 
     <!-- Cards adaptados -->
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6">
+    <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 md:gap-8">
       <div v-for="product in filteredProducts" :key="product.idProduto"
-        class="bg-white rounded shadow p-4 hover:shadow-md transition-all flex flex-col cursor-pointer motion-safe:hover:scale-110">
+        class="bg-white rounded shadow p-3 sm:p-4 hover:shadow-md transition-all flex flex-col cursor-pointer motion-safe:hover:scale-105">
 
         <!-- Imagem + Badge + Favorito -->
-        <div class="relative mb-3">
+        <div class="relative mb-2 sm:mb-3">
           <img :src="product.imagens[0]?.urlImagem || 'https://via.placeholder.com/200x200?text=Sem+Imagem'"
-            :alt="product.descricao" class="w-full h-32 object-cover rounded" />
+            :alt="product.descricao" class="w-full h-28 sm:h-32 object-cover rounded" />
           <div v-if="product.percentualDesconto"
             class="absolute top-2 left-2 bg-yellow-400 text-white text-xs px-2 py-1 rounded">
             {{ product.percentualDesconto }}% OFF
@@ -64,7 +69,7 @@
               <path
                 d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#f59e42" stroke-width="2"
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#ff0000" stroke-width="2"
               viewBox="0 0 24 24" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -73,27 +78,26 @@
         </div>
 
         <!-- Info -->
-        <div class="flex flex-col flex-grow justify-between">
-          <h3 class="text-sm font-semibold mb-1">{{ product.descricao }}</h3>
-          <p class="text-xs text-gray-500 mb-1">{{ product.marca }}</p>
-
-          <div class="mb-1">
-            <span class="text-blue-600 font-bold">{{ formatCurrency(product.valorVenda) }}</span>
-            <span v-if="product.valorDe && product.valorDe > product.valorVenda"
-              class="line-through text-sm text-gray-400 ml-1">
-              {{ formatCurrency(product.valorDe) }}
-            </span>
+        <router-link :to="`/product/${product.idProduto}`">
+          <div class="flex flex-col flex-grow justify-between">
+            <h3 class="text-xs sm:text-sm font-semibold mb-1">{{ product.descricao }}</h3>
+            <p class="text-xs text-gray-500 mb-1">{{ product.marca }}</p>
+            <div class="mb-1">
+              <span class="text-blue-600 font-bold text-sm sm:text-base">{{ formatCurrency(product.valorVenda) }}</span>
+              <span v-if="product.valorDe && product.valorDe > product.valorVenda"
+                class="line-through text-xs sm:text-sm text-gray-400 ml-1">
+                {{ formatCurrency(product.valorDe) }}
+              </span>
+            </div>
+            <p v-if="product.qtdParcelas && product.valorParcela" class="text-xs text-gray-500 mb-2">
+              ou {{ product.qtdParcelas }}x de {{ formatCurrency(product.valorParcela) }}
+            </p>
+            <button class="bg-blue-600 text-white py-1 rounded hover:bg-blue-700 text-xs sm:text-sm"
+              @click.stop="adicionarCarrinho(product)">
+              Adicionar ao Carrinho
+            </button>
           </div>
-
-          <p v-if="product.qtdParcelas && product.valorParcela" class="text-xs text-gray-500 mb-2">
-            ou {{ product.qtdParcelas }}x de {{ formatCurrency(product.valorParcela) }}
-          </p>
-
-          <button class="bg-blue-600 text-white py-1 rounded hover:bg-blue-700 text-sm"
-            @click="adicionarCarrinho(product)">
-            Adicionar ao Carrinho
-          </button>
-        </div>
+        </router-link>
       </div>
     </div>
   </section>
@@ -101,37 +105,25 @@
   <!-- WhatsApp -->
   <div class="whatsapp">
     <a id="whatsapp" href="https://wa.me/5514996418461?text=Olá, poderia me ajudar?" target="_blank"
-      class="fixed w-[60px] h-[60px] bottom-10 right-10 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-lg z-50">
+      class="fixed w-[48px] h-[48px] sm:w-[60px] sm:h-[60px] bottom-4 sm:bottom-10 right-4 sm:right-10 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl sm:text-3xl shadow-lg z-50">
       <i class="bi bi-whatsapp">
-        <img src="/src/assets/img/whatsapp.png" alt="" class="justify-center h-10 w-10" />
+        <img src="/src/assets/img/whatsapp.png" alt="" class="justify-center h-8 w-8 sm:h-10 sm:w-10" />
       </i>
     </a>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { adicionarCarrinho } from '@/assets/js/cartStore.js'
-import { computed } from 'vue'
-
-const search = ref('')
-const products = ref([])
-const favoritos = ref(JSON.parse(localStorage.getItem('favoritos') || '[]'))
-
-function toggleFavorito(produto) {
-  const idx = favoritos.value.findIndex(p => p.idProduto === produto.idProduto)
-  if (idx >= 0) {
-    favoritos.value.splice(idx, 1)
-  } else {
-    favoritos.value.push(produto)
-  }
-  localStorage.setItem('favoritos', JSON.stringify(favoritos.value))
-}
+import { favoritos, toggleFavorito } from '@/assets/js/favoritoStore.js'
 
 function isFavorito(produto) {
   return favoritos.value.some(p => p.idProduto === produto.idProduto)
 }
 
+const search = ref('')
+const products = ref([])
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
