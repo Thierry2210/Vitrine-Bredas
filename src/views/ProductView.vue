@@ -110,6 +110,8 @@ import { useRoute } from 'vue-router'
 import { adicionarCarrinho, cart } from '@/assets/js/cartStore.js'
 import { favoritos, toggleFavorito } from '@/assets/js/favoritoStore.js'
 
+const API_BASE = 'http://localhost:5101/api/Produto'
+
 const route = useRoute()
 const product = ref({})
 const mainImg = ref('')
@@ -151,50 +153,16 @@ function removeDoCarrinho() {
   }
 }
 
-const tokenApi = 'https://production.bredasapi.com.br/overall/auth/usuario'
-const productApi = 'https://production.bredasapi.com.br/erpproduto/integracaounimar'
-const post = { Grupo: 'unimar', Login: 'unimar', Senha: 'unimar' }
-
-async function getToken() {
-  const tokenExpirado = localStorage.getItem("token_expires");
-  if (tokenExpirado && Date.now() < parseInt(tokenExpirado)) {
-    return localStorage.getItem("token");
-  } else {
-    try {
-      const response = await fetch(tokenApi, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(post)
-      });
-      if (!response.ok) throw new Error(`Erro: ${response.status}`);
-      const data = await response.json();
-      const token = data.data.access_token;
-      const expireDate = Date.now() + 24 * 60 * 60 * 1000;
-      localStorage.setItem("token", token);
-      localStorage.setItem("token_expires", expireDate);
-      return token;
-    } catch (error) {
-      console.error('Erro ao gerar token:', error);
-      return null;
-    }
-  }
-}
-
-async function getProduct(id, token) {
+// Busca produto por ID na API C#
+async function getProduct(id) {
   loading.value = true
   try {
-    const response = await fetch(productApi, {
-      method: 'GET',
-      headers: { 'Authorization': token }
-    });
-    if (!response.ok) throw new Error(`Erro: ${response.status}`);
-    const data = await response.json();
-    const prod = data.data.find(p => p.idProduto == id)
-    if (prod) {
-      product.value = prod
-      mainImg.value = prod.imagens[0]?.urlImagem || ''
-      thumbs.value = prod.imagens.map(img => img.urlImagem)
-    }
+    const response = await fetch(`${API_BASE}/Produto/${id}`)
+    if (!response.ok) throw new Error(`Erro: ${response.status}`)
+    const data = await response.json()
+    product.value = data
+    mainImg.value = data.imagens?.[0]?.urlImagem || ''
+    thumbs.value = data.imagens?.map(img => img.urlImagem) || []
   } catch (error) {
     console.error('Erro ao buscar produto:', error)
   } finally {
@@ -203,9 +171,6 @@ async function getProduct(id, token) {
 }
 
 onMounted(async () => {
-  const token = await getToken()
-  if (token) {
-    await getProduct(route.params.id, token)
-  }
+  await getProduct(route.params.id)
 })
 </script>
