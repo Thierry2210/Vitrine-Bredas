@@ -16,9 +16,9 @@
       <!-- Detalhes do Produto -->
       <div class="p-4 border rounded-lg shadow relative">
         <!-- Botão de Favoritar -->
-        <button @click="toggleFavorito(product)" class="absolute top-4 right-4 z-10"
-          :aria-label="isFavorito(product) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
-          <svg v-if="isFavorito(product)" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" viewBox="0 0 24 24"
+        <button @click="toggleFavorito(produto)" class="absolute top-4 right-4 z-10"
+          :aria-label="isFavorito(produto) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+          <svg v-if="isFavorito(produto)" xmlns="http://www.w3.org/2000/svg" fill="#ff0000" viewBox="0 0 24 24"
             class="w-7 h-7">
             <path
               d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -34,21 +34,21 @@
           <span class="text-blue-600 font-bold">Carregando...</span>
         </div>
         <div v-else>
-          <span v-if="product.novo" class="bg-yellow-200 text-yellow-800 px-2 py-1 text-xs rounded">Novo</span>
-          <h1 class="text-2xl font-bold mt-2">{{ product.descricao }}</h1>
+          <span v-if="produto.novo" class="bg-yellow-200 text-yellow-800 px-2 py-1 text-xs rounded">Novo</span>
+          <h1 class="text-2xl font-bold mt-2">{{ produto.descricao }}</h1>
           <div class="flex items-center gap-1 mt-1">
             <span class="text-yellow-400">★★★★★</span>
-            <span>{{ product.avaliacoes || '0 avaliações' }}</span>
+            <span>{{ produto.avaliacoes || '0 avaliações' }}</span>
           </div>
           <div class="mt-4 text-gray-700">
-            <p v-if="product.valorAntigo" class="line-through text-sm">{{ formatCurrency(product.valorAntigo) }}</p>
-            <p class="text-3xl font-bold text-blue-600">{{ formatCurrency(product.valorVenda) }}</p>
-            <p v-if="product.qtdParcelas && product.valorParcela" class="text-xs text-gray-500 mt-1">
-              ou {{ product.qtdParcelas }}x de {{ formatCurrency(product.valorParcela) }}
+            <p v-if="produto.valorAntigo" class="line-through text-sm">{{ formatCurrency(produto.valorAntigo) }}</p>
+            <p class="text-3xl font-bold text-blue-600">{{ formatCurrency(produto.valorVenda) }}</p>
+            <p v-if="produto.qtdParcelas && produto.valorParcela" class="text-xs text-gray-500 mt-1">
+              ou {{ produto.qtdParcelas }}x de {{ formatCurrency(produto.valorParcela) }}
             </p>
-            <span v-if="product.percentualDesconto"
+            <span v-if="produto.percentualDesconto"
               class="inline-block bg-yellow-400 text-white text-xs px-2 py-1 rounded ml-2">
-              {{ product.percentualDesconto }}% OFF
+              {{ produto.percentualDesconto }}% OFF
             </span>
           </div>
           <p class="text-sm text-green-600 mt-2">Envio para todo o país</p>
@@ -80,19 +80,19 @@
                 <tbody>
                   <tr class="border-b hover:bg-gray-50 transition">
                     <td class="px-5 py-4 font-semibold text-gray-700 w-1/3">Marca</td>
-                    <td class="px-5 py-4 text-gray-900">{{ product.marca }}</td>
+                    <td class="px-5 py-4 text-gray-900">{{ produto.marca }}</td>
                   </tr>
                   <tr class="hover:bg-gray-50 transition">
                     <td class="px-5 py-4 font-semibold text-gray-700">Modelo</td>
-                    <td class="px-5 py-4 text-gray-900">{{ product.modelo }}</td>
+                    <td class="px-5 py-4 text-gray-900">{{ produto.modelo }}</td>
                   </tr>
-                  <tr v-if="product.cor" class="hover:bg-gray-50 transition">
+                  <tr v-if="produto.cor" class="hover:bg-gray-50 transition">
                     <td class="px-5 py-4 font-semibold text-gray-700">Cor</td>
-                    <td class="px-5 py-4 text-gray-900">{{ product.cor }}</td>
+                    <td class="px-5 py-4 text-gray-900">{{ produto.cor }}</td>
                   </tr>
-                  <tr v-if="product.peso" class="hover:bg-gray-50 transition">
+                  <tr v-if="produto.peso" class="hover:bg-gray-50 transition">
                     <td class="px-5 py-4 font-semibold text-gray-700">Peso</td>
-                    <td class="px-5 py-4 text-gray-900">{{ product.peso }}</td>
+                    <td class="px-5 py-4 text-gray-900">{{ produto.peso }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,10 +110,10 @@ import { useRoute } from 'vue-router'
 import { adicionarCarrinho, cart } from '@/assets/js/cartStore.js'
 import { favoritos, toggleFavorito } from '@/assets/js/favoritoStore.js'
 
-const API_BASE = 'http://localhost:5101/api/Produto'
+const API_BASE = 'http://localhost:5001/api/Produto'
 
 const route = useRoute()
-const product = ref({})
+const produto = ref({})
 const mainImg = ref('')
 const thumbs = ref([])
 const quantidade = ref(1)
@@ -134,13 +134,13 @@ function validateQtd() {
 }
 
 function addCarrinho() {
-  adicionarCarrinho({ ...product.value, quantity: quantidade.value })
+  adicionarCarrinho({ ...produto.value, quantity: quantidade.value })
   msg.value = 'Produto adicionado ao carrinho!'
   setTimeout(() => (msg.value = ''), 2000)
 }
 
 function removeDoCarrinho() {
-  const idx = cart.value.findIndex(item => item.idProduto === product.value.idProduto)
+  const idx = cart.value.findIndex(item => item.idProduto === produto.value.idProduto)
   if (idx >= 0) {
     if ((cart.value[idx].quantity || 1) > quantidade.value) {
       cart.value[idx].quantity -= quantidade.value
@@ -154,13 +154,13 @@ function removeDoCarrinho() {
 }
 
 // Busca produto por ID na API C#
-async function getProduct(id) {
+async function getProduto(id) {
   loading.value = true
   try {
     const response = await fetch(`${API_BASE}/Produto/${id}`)
     if (!response.ok) throw new Error(`Erro: ${response.status}`)
     const data = await response.json()
-    product.value = data
+    produto.value = data
     mainImg.value = data.imagens?.[0]?.urlImagem || ''
     thumbs.value = data.imagens?.map(img => img.urlImagem) || []
   } catch (error) {
@@ -171,6 +171,6 @@ async function getProduct(id) {
 }
 
 onMounted(async () => {
-  await getProduct(route.params.id)
+  await getProduto(route.params.id)
 })
 </script>

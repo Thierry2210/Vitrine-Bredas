@@ -1,22 +1,22 @@
 <template>
-  <div class="px-20">
+  <div class="px-2 sm:px-8 md:px-20 py-8">
     <h1 class="text-2xl font-bold mb-4 py-4">Carrinho de Compras</h1>
     <div class="flex flex-col lg:flex-row gap-8">
 
       <!-- Lista de produtos -->
       <div class="flex-1">
-        <div v-if="cart.length > 0" v-for="(item, index) in cart" :key="item.idProduto"
+        <div v-if="cart.length > 0" v-for="(item, index) in cart" :key="item.id"
           class="bg-white p-3 mb-3 rounded-lg shadow flex items-center gap-3">
-          <router-link :to="`/product/${item.idProduto}`">
-            <img :src="item.imagens?.[0]?.urlImagem || 'https://via.placeholder.com/60x60?text=Sem+Imagem'"
-              alt="Produto" class="w-14 h-14 object-cover rounded" />
+          <router-link :to="`/produto/${item.id}`">
+            <img :src="item.imagens?.[0] || 'https://via.placeholder.com/60x60?text=Sem+Imagem'" alt="Produto"
+              class="w-14 h-14 object-cover rounded" />
           </router-link>
           <div class="flex-1">
-            <p class="font-semibold text-sm">{{ item.descricao }}</p>
+            <p class="font-semibold text-sm">{{ item.nome }}</p>
             <p class="text-gray-600 text-xs">Qtd: {{ item.quantity || 1 }}</p>
-            <p class="text-gray-600 text-xs">Preço: {{ formatCurrency(item.valorVenda) }}</p>
+            <p class="text-gray-600 text-xs">Preço: {{ formatCurrency(item.preco) }}</p>
           </div>
-          <button @click="adicionarCarrinho({ ...item, quantity: 1 })" class="text-blue-500 hover:underline text-xs">
+          <button @click="adicionarCarrinho({item})" class="text-blue-500 hover:underline text-xs">
             Adicionar
           </button>
           <button @click="removeItem(index)" class="text-red-500 hover:underline text-xs">
@@ -38,7 +38,7 @@
           <span>Subtotal:</span>
           <span>{{ formatCurrency(totalPrice) }}</span>
         </div>
-        
+
         <!-- Simulação de frete -->
         <div class="mb-3">
           <label class="block text-xs font-medium mb-1" for="cep">Calcular frete</label>
@@ -65,23 +65,25 @@
 import { adicionarCarrinho, cart, removerCarrinho } from '@/assets/js/cartStore.js'
 import { ref, computed } from 'vue'
 
+function incrementarQuantidade(produto) {
+  adicionarCarrinho({ id: produto.id, quantity: 1 })
+}
+
 function removeItem(index) {
   removerCarrinho(index)
 }
 
 const totalPrice = computed(() =>
-  cart.value.reduce((sum, item) => sum + (item.valorVenda * (item.quantity || 1)), 0)
+  cart.value.reduce((sum, item) => sum + (item.preco * (item.quantity || 1)), 0)
 )
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 }
 
-// Frete (simulação simples)
 const cep = ref('')
 const frete = ref(null)
 function calcularFrete() {
-  // Simulação: se CEP preenchido, frete fixo de R$ 20,00
   if (cep.value && cep.value.length >= 8) {
     frete.value = 20
   } else {
