@@ -16,7 +16,7 @@
             <p class="text-gray-600 text-xs">Qtd: {{ item.quantity || 1 }}</p>
             <p class="text-gray-600 text-xs">Preço: {{ formatCurrency(item.preco) }}</p>
           </div>
-          <button @click="adicionarCarrinho({item})" class="text-blue-500 hover:underline text-xs">
+          <button @click="adicionarItem(item)" class="text-blue-500 hover:underline text-xs">
             Adicionar
           </button>
           <button @click="removeItem(index)" class="text-red-500 hover:underline text-xs">
@@ -65,8 +65,8 @@
 import { adicionarCarrinho, cart, removerCarrinho } from '@/assets/js/cartStore.js'
 import { ref, computed } from 'vue'
 
-function incrementarQuantidade(produto) {
-  adicionarCarrinho({ id: produto.id, quantity: 1 })
+function adicionarItem(item) {
+  adicionarCarrinho(item)
 }
 
 function removeItem(index) {
